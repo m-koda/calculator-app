@@ -1,23 +1,37 @@
 <template>
   <div class="jumbotron">
-    <h1 class="display-5 text-center">第{{ current_question_num }}問</h1>
-    <div v-if="isCorrect" class="alert alert-primary text-center result-message">正解</div>
-    <div v-if="isMistake" class="alert alert-danger text-center result-message">不正解</div>
-    <h3 class="text-center mt-4">{{ questions[current_question_num - 1].question }} = ?</h3>
-    <form class="mt-4">
-      <div class="form-row">
-        <div class="col-4"></div>
-        <div class="col-4">
-          <div class="form-group">
-            <input ref="inputAnswer" type="text" class="form-control" placeholder="半角で入力してください" />
+    <template v-if="!isFinished">
+      <h1 class="display-5 text-center">第{{ current_question_num }}問</h1>
+      <div v-if="isCorrect" class="alert alert-primary text-center result-message">正解</div>
+      <div v-if="isMistake" class="alert alert-danger text-center result-message">不正解</div>
+      <h3 class="text-center mt-4">{{ questions[current_question_num - 1].question }} = ?</h3>
+      <form class="mt-4">
+        <div class="form-row">
+          <div class="col-4"></div>
+          <div class="col-4">
+            <div class="form-group">
+              <input ref="inputAnswer" type="text" class="form-control" placeholder="半角で入力してください" />
+            </div>
           </div>
+          <div class="col-4"></div>
         </div>
-        <div class="col-4"></div>
+        <div class="text-center mt-3">
+          <button v-on:click="answerQuestion" type="button" class="btn btn-outline-dark">解答する</button>
+        </div>
+      </form>
+    </template>
+    <template v-if="isFinished">
+      <div class="card" style="width: 18rem; margin: 0 auto;">
+        <div class="card-header text-center">成績</div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">正解数: {{ correct_answer_num }} / {{ questions.length }}</li>
+        </ul>
       </div>
-      <div class="text-center mt-3">
-        <button v-on:click="answerQuestion" type="button" class="btn btn-outline-dark">解答する</button>
+      <div class="text-center mt-4">
+        <a href="/question" type="button" class="btn btn-outline-secondary">もう一度</a>
+        <a href="/" type="button" class="btn btn-outline-secondary">トップページに戻る</a>
       </div>
-    </form>
+    </template>
   </div>
 </template>
 
@@ -42,7 +56,8 @@ export default {
       current_question_num: 1,
       correct_answer_num: 0,
       isCorrect: false,
-      isMistake: false
+      isMistake: false,
+      isFinished: false
     };
   },
   methods: {
@@ -53,7 +68,8 @@ export default {
       this.sleep(750).then(() => {
         // 最終問題の場合
         if (this.questions.length === this.current_question_num) {
-          console.log("finished");
+          // 成績を表示する
+          this.isFinished = true;
         }
 
         this.current_question_num++;

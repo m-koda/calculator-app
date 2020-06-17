@@ -1931,6 +1931,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1947,7 +1961,8 @@ __webpack_require__.r(__webpack_exports__);
       current_question_num: 1,
       correct_answer_num: 0,
       isCorrect: false,
-      isMistake: false
+      isMistake: false,
+      isFinished: false
     };
   },
   methods: {
@@ -1959,7 +1974,8 @@ __webpack_require__.r(__webpack_exports__);
       this.sleep(750).then(function () {
         // 最終問題の場合
         if (_this.questions.length === _this.current_question_num) {
-          console.log("finished");
+          // 成績を表示する
+          _this.isFinished = true;
         }
 
         _this.current_question_num++;
@@ -38180,65 +38196,138 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "jumbotron" }, [
-    _c("h1", { staticClass: "display-5 text-center" }, [
-      _vm._v("第" + _vm._s(_vm.current_question_num) + "問")
-    ]),
-    _vm._v(" "),
-    _vm.isCorrect
-      ? _c(
-          "div",
-          { staticClass: "alert alert-primary text-center result-message" },
-          [_vm._v("正解")]
-        )
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.isMistake
-      ? _c(
-          "div",
-          { staticClass: "alert alert-danger text-center result-message" },
-          [_vm._v("不正解")]
-        )
-      : _vm._e(),
-    _vm._v(" "),
-    _c("h3", { staticClass: "text-center mt-4" }, [
-      _vm._v(
-        _vm._s(_vm.questions[_vm.current_question_num - 1].question) + " = ?"
-      )
-    ]),
-    _vm._v(" "),
-    _c("form", { staticClass: "mt-4" }, [
-      _c("div", { staticClass: "form-row" }, [
-        _c("div", { staticClass: "col-4" }),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-4" }, [
-          _c("div", { staticClass: "form-group" }, [
-            _c("input", {
-              ref: "inputAnswer",
-              staticClass: "form-control",
-              attrs: { type: "text", placeholder: "半角で入力してください" }
-            })
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-4" })
-      ]),
+  return _c(
+    "div",
+    { staticClass: "jumbotron" },
+    [
+      !_vm.isFinished
+        ? [
+            _c("h1", { staticClass: "display-5 text-center" }, [
+              _vm._v("第" + _vm._s(_vm.current_question_num) + "問")
+            ]),
+            _vm._v(" "),
+            _vm.isCorrect
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "alert alert-primary text-center result-message"
+                  },
+                  [_vm._v("正解")]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.isMistake
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger text-center result-message"
+                  },
+                  [_vm._v("不正解")]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("h3", { staticClass: "text-center mt-4" }, [
+              _vm._v(
+                _vm._s(_vm.questions[_vm.current_question_num - 1].question) +
+                  " = ?"
+              )
+            ]),
+            _vm._v(" "),
+            _c("form", { staticClass: "mt-4" }, [
+              _c("div", { staticClass: "form-row" }, [
+                _c("div", { staticClass: "col-4" }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-4" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("input", {
+                      ref: "inputAnswer",
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "text",
+                        placeholder: "半角で入力してください"
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-4" })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "text-center mt-3" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-outline-dark",
+                    attrs: { type: "button" },
+                    on: { click: _vm.answerQuestion }
+                  },
+                  [_vm._v("解答する")]
+                )
+              ])
+            ])
+          ]
+        : _vm._e(),
       _vm._v(" "),
-      _c("div", { staticClass: "text-center mt-3" }, [
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-outline-dark",
-            attrs: { type: "button" },
-            on: { click: _vm.answerQuestion }
-          },
-          [_vm._v("解答する")]
-        )
-      ])
-    ])
-  ])
+      _vm.isFinished
+        ? [
+            _c(
+              "div",
+              {
+                staticClass: "card",
+                staticStyle: { width: "18rem", margin: "0 auto" }
+              },
+              [
+                _c("div", { staticClass: "card-header text-center" }, [
+                  _vm._v("成績")
+                ]),
+                _vm._v(" "),
+                _c("ul", { staticClass: "list-group list-group-flush" }, [
+                  _c("li", { staticClass: "list-group-item" }, [
+                    _vm._v(
+                      "正解数: " +
+                        _vm._s(_vm.correct_answer_num) +
+                        " / " +
+                        _vm._s(_vm.questions.length)
+                    )
+                  ])
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _vm._m(0)
+          ]
+        : _vm._e()
+    ],
+    2
+  )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-center mt-4" }, [
+      _c(
+        "a",
+        {
+          staticClass: "btn btn-outline-secondary",
+          attrs: { href: "/question", type: "button" }
+        },
+        [_vm._v("もう一度")]
+      ),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass: "btn btn-outline-secondary",
+          attrs: { href: "/", type: "button" }
+        },
+        [_vm._v("トップページに戻る")]
+      )
+    ])
+  }
+]
 render._withStripped = true
 
 
