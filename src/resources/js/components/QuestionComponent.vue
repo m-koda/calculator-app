@@ -25,6 +25,7 @@
         <div class="card-header text-center">成績</div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">正解数: {{ correct_answer_num }} / {{ questions.length }}</li>
+          <li class="list-group-item">平均解答時間: {{ averageAnswerTime }}秒</li>
         </ul>
       </div>
       <div class="text-center mt-4">
@@ -57,15 +58,28 @@ export default {
       correct_answer_num: 0,
       isCorrect: false,
       isMistake: false,
-      isFinished: false
+      isFinished: false,
+      startTime: Date.now(),
+      totalAnswerTime: 0
     };
+  },
+  computed: {
+    averageAnswerTime: function() {
+      return (this.totalAnswerTime / this.questions.length / 1000).toFixed(1);
+    }
   },
   methods: {
     answerQuestion() {
+      // 解答時間の取得
+      const now = Date.now();
+      this.totalAnswerTime += now - this.startTime;
+
       const inputAnswer = Number(this.$refs.inputAnswer.value);
       this.checkAnswer(inputAnswer);
 
       this.sleep(750).then(() => {
+        this.startTime = Date.now();
+
         // 最終問題の場合
         if (this.questions.length === this.current_question_num) {
           // 成績を表示する

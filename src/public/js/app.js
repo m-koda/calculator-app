@@ -1945,6 +1945,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1962,17 +1963,28 @@ __webpack_require__.r(__webpack_exports__);
       correct_answer_num: 0,
       isCorrect: false,
       isMistake: false,
-      isFinished: false
+      isFinished: false,
+      startTime: Date.now(),
+      totalAnswerTime: 0
     };
+  },
+  computed: {
+    averageAnswerTime: function averageAnswerTime() {
+      return (this.totalAnswerTime / this.questions.length / 1000).toFixed(1);
+    }
   },
   methods: {
     answerQuestion: function answerQuestion() {
       var _this = this;
 
+      // 解答時間の取得
+      var now = Date.now();
+      this.totalAnswerTime += now - this.startTime;
       var inputAnswer = Number(this.$refs.inputAnswer.value);
       this.checkAnswer(inputAnswer);
       this.sleep(750).then(function () {
-        // 最終問題の場合
+        _this.startTime = Date.now(); // 最終問題の場合
+
         if (_this.questions.length === _this.current_question_num) {
           // 成績を表示する
           _this.isFinished = true;
@@ -38289,6 +38301,12 @@ var render = function() {
                         _vm._s(_vm.correct_answer_num) +
                         " / " +
                         _vm._s(_vm.questions.length)
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("li", { staticClass: "list-group-item" }, [
+                    _vm._v(
+                      "平均解答時間: " + _vm._s(_vm.averageAnswerTime) + "秒"
                     )
                   ])
                 ])
