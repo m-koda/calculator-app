@@ -1947,18 +1947,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    baseQuestions: {
+      type: Array,
+      "default": []
+    }
+  },
   data: function data() {
     return {
-      questions: [{
-        question: "1 + 1",
-        answer: 2
-      }, {
-        question: "10 + 10",
-        answer: 20
-      }, {
-        question: "100 + 100",
-        answer: 200
-      }],
+      questions: this.baseQuestions,
       current_question_num: 1,
       correct_answer_num: 0,
       isCorrect: false,
@@ -1972,6 +1969,9 @@ __webpack_require__.r(__webpack_exports__);
     averageAnswerTime: function averageAnswerTime() {
       return (this.totalAnswerTime / this.questions.length / 1000).toFixed(1);
     }
+  },
+  mounted: function mounted() {
+    this.$refs.inputAnswer.focus();
   },
   methods: {
     answerQuestion: function answerQuestion() {
@@ -1989,6 +1989,10 @@ __webpack_require__.r(__webpack_exports__);
           // 成績を表示する
           _this.isFinished = true;
         }
+
+        _this.$refs.inputAnswer.value = "";
+
+        _this.$refs.inputAnswer.focus();
 
         _this.current_question_num++;
       });
@@ -38241,7 +38245,7 @@ var render = function() {
             _vm._v(" "),
             _c("h3", { staticClass: "text-center mt-4" }, [
               _vm._v(
-                _vm._s(_vm.questions[_vm.current_question_num - 1].question) +
+                _vm._s(_vm.questions[_vm.current_question_num - 1].content) +
                   " = ?"
               )
             ]),
@@ -38255,10 +38259,7 @@ var render = function() {
                     _c("input", {
                       ref: "inputAnswer",
                       staticClass: "form-control",
-                      attrs: {
-                        type: "text",
-                        placeholder: "半角で入力してください"
-                      }
+                      attrs: { type: "text", placeholder: "半角で入力" }
                     })
                   ])
                 ]),

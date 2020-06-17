@@ -4,13 +4,13 @@
       <h1 class="display-5 text-center">第{{ current_question_num }}問</h1>
       <div v-if="isCorrect" class="alert alert-primary text-center result-message">正解</div>
       <div v-if="isMistake" class="alert alert-danger text-center result-message">不正解</div>
-      <h3 class="text-center mt-4">{{ questions[current_question_num - 1].question }} = ?</h3>
+      <h3 class="text-center mt-4">{{ questions[current_question_num - 1].content }} = ?</h3>
       <form class="mt-4">
         <div class="form-row">
           <div class="col-4"></div>
           <div class="col-4">
             <div class="form-group">
-              <input ref="inputAnswer" type="text" class="form-control" placeholder="半角で入力してください" />
+              <input ref="inputAnswer" type="text" class="form-control" placeholder="半角で入力" />
             </div>
           </div>
           <div class="col-4"></div>
@@ -38,22 +38,15 @@
 
 <script>
 export default {
+  props: {
+    baseQuestions: {
+      type: Array,
+      default: []
+    }
+  },
   data() {
     return {
-      questions: [
-        {
-          question: "1 + 1",
-          answer: 2
-        },
-        {
-          question: "10 + 10",
-          answer: 20
-        },
-        {
-          question: "100 + 100",
-          answer: 200
-        }
-      ],
+      questions: this.baseQuestions,
       current_question_num: 1,
       correct_answer_num: 0,
       isCorrect: false,
@@ -67,6 +60,9 @@ export default {
     averageAnswerTime: function() {
       return (this.totalAnswerTime / this.questions.length / 1000).toFixed(1);
     }
+  },
+  mounted() {
+    this.$refs.inputAnswer.focus();
   },
   methods: {
     answerQuestion() {
@@ -86,6 +82,8 @@ export default {
           this.isFinished = true;
         }
 
+        this.$refs.inputAnswer.value = "";
+        this.$refs.inputAnswer.focus();
         this.current_question_num++;
       });
     },
