@@ -7,6 +7,8 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Laravel\Socialite\Facades\Socialite;
 use App\User;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -53,7 +55,35 @@ class LoginController extends Controller
 
         auth()->login($user);
 
+        // API認証用のトークン発行
+        $api_token = Str::random(80);
+        $user->api_token = $api_token;
+        $user->save();
+        session(['api_token' => $api_token]);
+
         return redirect($this->redirectTo);
+    }
+
+    /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout(Request $request)
+    {
+        // api_tokenをnullにする
+        $user = $request->user();
+        $user->api_token = null;
+        $user->save();
+
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return $this->loggedOut($request) ?: redirect('/');
     }
 
     protected function createUser($providerUser)

@@ -19,6 +19,9 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <!-- API Token -->
+    <meta name="api-token" content="{{ session('api_token') ?? '' }}">
 </head>
 
 <body>

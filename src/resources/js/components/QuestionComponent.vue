@@ -53,7 +53,10 @@ export default {
       isMistake: false,
       isFinished: false,
       startTime: Date.now(),
-      totalAnswerTime: 0
+      totalAnswerTime: 0,
+      api_token: document
+        .querySelector('meta[name="api-token"]')
+        .getAttribute("content")
     };
   },
   computed: {
@@ -79,6 +82,13 @@ export default {
 
         // 最終問題の場合
         if (this.questions.length === this.current_question_num) {
+          // 成績をDBに保存する
+          const activityData = {
+            correct_answer_num: this.correct_answer_num,
+            total_answer_num: this.questions.length,
+            correct_answer_second: this.averageAnswerTime
+          };
+          this.putActivityData(activityData);
           // 成績を表示する
           this.isFinished = true;
         }
@@ -87,6 +97,22 @@ export default {
         this.$refs.inputAnswer.focus();
         this.current_question_num++;
       });
+    },
+    putActivityData(data) {
+      const headers = {
+        Authorization: `Bearer ${this.api_token}`,
+        Accept: "application/json"
+      };
+      axios
+        .post("/api/activity", data, {
+          headers: headers
+        })
+        .then(res => {
+          console.log(res.data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     checkAnswer(inputAnswer) {
       if (

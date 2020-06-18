@@ -1962,7 +1962,8 @@ __webpack_require__.r(__webpack_exports__);
       isMistake: false,
       isFinished: false,
       startTime: Date.now(),
-      totalAnswerTime: 0
+      totalAnswerTime: 0,
+      api_token: document.querySelector('meta[name="api-token"]').getAttribute("content")
     };
   },
   computed: {
@@ -1987,7 +1988,16 @@ __webpack_require__.r(__webpack_exports__);
         _this.startTime = Date.now(); // 最終問題の場合
 
         if (_this.questions.length === _this.current_question_num) {
-          // 成績を表示する
+          // 成績をDBに保存する
+          var activityData = {
+            correct_answer_num: _this.correct_answer_num,
+            total_answer_num: _this.questions.length,
+            correct_answer_second: _this.averageAnswerTime
+          };
+
+          _this.putActivityData(activityData); // 成績を表示する
+
+
           _this.isFinished = true;
         }
 
@@ -1996,6 +2006,19 @@ __webpack_require__.r(__webpack_exports__);
         _this.$refs.inputAnswer.focus();
 
         _this.current_question_num++;
+      });
+    },
+    putActivityData: function putActivityData(data) {
+      var headers = {
+        Authorization: "Bearer ".concat(this.api_token),
+        Accept: "application/json"
+      };
+      axios.post("/api/activity", data, {
+        headers: headers
+      }).then(function (res) {
+        console.log(res.data);
+      })["catch"](function (error) {
+        console.log(error);
       });
     },
     checkAnswer: function checkAnswer(inputAnswer) {
