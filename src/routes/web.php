@@ -16,9 +16,9 @@ Route::get('/', function () {
 });
 
 Route::get('/question', 'QuestionController@index')->name('question');
+Route::get('/activity', 'ActivityController@index')->name('activity');
 
 Auth::routes();
-
 
 // Googleログイン
 Route::get('/login/google', 'Auth\LoginController@redirectToGoogle')->name('google.login');
