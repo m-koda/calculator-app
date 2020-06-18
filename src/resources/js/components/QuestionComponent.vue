@@ -73,6 +73,7 @@ export default {
       const inputAnswer = Number(this.$refs.inputAnswer.value);
       this.checkAnswer(inputAnswer);
 
+      // 厳密な同期処理になってない...setTimeout自体をpromiseでくくる必要あると思う
       this.sleep(750).then(() => {
         this.startTime = Date.now();
 

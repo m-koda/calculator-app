@@ -1981,7 +1981,8 @@ __webpack_require__.r(__webpack_exports__);
       var now = Date.now();
       this.totalAnswerTime += now - this.startTime;
       var inputAnswer = Number(this.$refs.inputAnswer.value);
-      this.checkAnswer(inputAnswer);
+      this.checkAnswer(inputAnswer); // 厳密な同期処理になってない...setTimeout自体をpromiseでくくる必要あると思う
+
       this.sleep(750).then(function () {
         _this.startTime = Date.now(); // 最終問題の場合
 
