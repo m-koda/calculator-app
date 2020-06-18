@@ -18,3 +18,8 @@ Route::get('/', function () {
 Route::get('/question', 'QuestionController@index')->name('question');
 
 Auth::routes();
+
+
+// Googleログイン
+Route::get('/login/google', 'Auth\LoginController@redirectToGoogle')->name('google.login');
+Route::get('/login/google/callback', 'Auth\LoginController@handleGoogleCallback');
