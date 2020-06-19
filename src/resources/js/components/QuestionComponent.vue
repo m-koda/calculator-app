@@ -16,7 +16,12 @@
           <div class="col-4"></div>
         </div>
         <div class="text-center mt-3">
-          <button v-on:click="answerQuestion" type="button" class="btn btn-outline-dark">解答する</button>
+          <button
+            v-bind:disabled="isChecking"
+            v-on:click="answerQuestion"
+            type="button"
+            class="btn btn-secondary"
+          >解答する</button>
         </div>
       </form>
     </template>
@@ -56,7 +61,8 @@ export default {
       totalAnswerTime: 0,
       api_token: document
         .querySelector('meta[name="api-token"]')
-        .getAttribute("content")
+        .getAttribute("content"),
+      isChecking: false
     };
   },
   computed: {
@@ -69,6 +75,7 @@ export default {
   },
   methods: {
     answerQuestion() {
+      this.isChecking = true;
       // 解答時間の取得
       const now = Date.now();
       this.totalAnswerTime += now - this.startTime;
@@ -95,6 +102,7 @@ export default {
 
         this.$refs.inputAnswer.value = "";
         this.$refs.inputAnswer.focus();
+        this.isChecking = false;
         this.current_question_num++;
       });
     },

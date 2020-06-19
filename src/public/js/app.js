@@ -1946,6 +1946,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     baseQuestions: {
@@ -1963,7 +1968,8 @@ __webpack_require__.r(__webpack_exports__);
       isFinished: false,
       startTime: Date.now(),
       totalAnswerTime: 0,
-      api_token: document.querySelector('meta[name="api-token"]').getAttribute("content")
+      api_token: document.querySelector('meta[name="api-token"]').getAttribute("content"),
+      isChecking: false
     };
   },
   computed: {
@@ -1978,7 +1984,8 @@ __webpack_require__.r(__webpack_exports__);
     answerQuestion: function answerQuestion() {
       var _this = this;
 
-      // 解答時間の取得
+      this.isChecking = true; // 解答時間の取得
+
       var now = Date.now();
       this.totalAnswerTime += now - this.startTime;
       var inputAnswer = Number(this.$refs.inputAnswer.value);
@@ -2005,6 +2012,7 @@ __webpack_require__.r(__webpack_exports__);
 
         _this.$refs.inputAnswer.focus();
 
+        _this.isChecking = false;
         _this.current_question_num++;
       });
     },
@@ -38295,8 +38303,8 @@ var render = function() {
                 _c(
                   "button",
                   {
-                    staticClass: "btn btn-outline-dark",
-                    attrs: { type: "button" },
+                    staticClass: "btn btn-secondary",
+                    attrs: { disabled: _vm.isChecking, type: "button" },
                     on: { click: _vm.answerQuestion }
                   },
                   [_vm._v("解答する")]
