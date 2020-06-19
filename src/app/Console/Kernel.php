@@ -71,8 +71,9 @@ class Kernel extends ConsoleKernel
                 $all_data[] = $data;
             }
             // 取得した成績をメール送信する
+            $date = $yesterday->format('m/d');
             foreach ($all_data as $data) {
-                Mail::to($data['email'])->send(new SendActivityMail($data));
+                Mail::to($data['email'])->send(new SendActivityMail($data, $date));
             }
         })->everyMinute();
     }
