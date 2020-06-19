@@ -5,6 +5,8 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\User;
+use App\Mail\SendActivityMail;
+use Mail;
 
 class Kernel extends ConsoleKernel
 {
@@ -49,22 +51,29 @@ class Kernel extends ConsoleKernel
                     }
                     $data = [
                         'user_name' => $user->name,
+                        'email' => $user->email,
                         'correct_answer_num' => $correct_answer_num,
                         'total_answer_num' => $total_answer_num,
                         'correct_answer_second' => round($correct_answer_second / $total_answer_num, 1),
+                        'correct_answer_rate' => round($correct_answer_num / $total_answer_num * 100, 1),
                     ];
                 } else {
                     //前日の成績がない場合
                     $data = [
                         'user_name' => $user->name,
+                        'email' => $user->email,
                         'correct_answer_num' => 0,
                         'total_answer_num' => 0,
                         'correct_answer_second' => 0,
+                        'correct_answer_rate' => 0,
                     ];
                 }
                 $all_data[] = $data;
             }
             // 取得した成績をメール送信する
+            foreach ($all_data as $data) {
+                Mail::to($data['email'])->send(new SendActivityMail($data));
+            }
         })->everyMinute();
     }
 
