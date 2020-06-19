@@ -13,10 +13,10 @@
 
 Route::get('/', function () {
     return view('home');
-});
+})->name('home');
 
 Route::get('/question', 'QuestionController@index')->name('question');
-Route::get('/activity', 'ActivityController@index')->name('activity');
+Route::get('/activity', 'ActivityController@index')->name('activity')->middleware('auth');
 
 Auth::routes();
 
