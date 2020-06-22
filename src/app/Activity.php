@@ -11,5 +11,6 @@ class Activity extends Model
         'correct_answer_num',
         'total_answer_num',
         'correct_answer_second',
+        'genre_id',
     ];
 }

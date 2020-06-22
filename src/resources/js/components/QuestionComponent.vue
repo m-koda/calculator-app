@@ -34,7 +34,11 @@
         </ul>
       </div>
       <div class="text-center mt-4">
-        <a href="/question" type="button" class="btn btn-outline-secondary">もう一度</a>
+        <a
+          v-bind:href="`/question?genre=${genreId}`"
+          type="button"
+          class="btn btn-outline-secondary"
+        >もう一度</a>
         <a href="/" type="button" class="btn btn-outline-secondary">トップページに戻る</a>
       </div>
     </template>
@@ -47,6 +51,10 @@ export default {
     baseQuestions: {
       type: Array,
       default: []
+    },
+    baseGenreId: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -62,7 +70,8 @@ export default {
       api_token: document
         .querySelector('meta[name="api-token"]')
         .getAttribute("content"),
-      isChecking: false
+      isChecking: false,
+      genreId: this.baseGenreId
     };
   },
   computed: {
@@ -93,7 +102,8 @@ export default {
           const activityData = {
             correct_answer_num: this.correct_answer_num,
             total_answer_num: this.questions.length,
-            correct_answer_second: this.averageAnswerTime
+            correct_answer_second: this.averageAnswerTime,
+            genre_id: this.genreId
           };
           this.putActivityData(activityData);
           // 成績を表示する

@@ -1951,11 +1951,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     baseQuestions: {
       type: Array,
       "default": []
+    },
+    baseGenreId: {
+      type: Number,
+      "default": 0
     }
   },
   data: function data() {
@@ -1969,7 +1977,8 @@ __webpack_require__.r(__webpack_exports__);
       startTime: Date.now(),
       totalAnswerTime: 0,
       api_token: document.querySelector('meta[name="api-token"]').getAttribute("content"),
-      isChecking: false
+      isChecking: false,
+      genreId: this.baseGenreId
     };
   },
   computed: {
@@ -1999,7 +2008,8 @@ __webpack_require__.r(__webpack_exports__);
           var activityData = {
             correct_answer_num: _this.correct_answer_num,
             total_answer_num: _this.questions.length,
-            correct_answer_second: _this.averageAnswerTime
+            correct_answer_second: _this.averageAnswerTime,
+            genre_id: _this.genreId
           };
 
           _this.putActivityData(activityData); // 成績を表示する
@@ -38346,39 +38356,35 @@ var render = function() {
               ]
             ),
             _vm._v(" "),
-            _vm._m(0)
+            _c("div", { staticClass: "text-center mt-4" }, [
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-outline-secondary",
+                  attrs: {
+                    href: "/question?genre=" + _vm.genreId,
+                    type: "button"
+                  }
+                },
+                [_vm._v("もう一度")]
+              ),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-outline-secondary",
+                  attrs: { href: "/", type: "button" }
+                },
+                [_vm._v("トップページに戻る")]
+              )
+            ])
           ]
         : _vm._e()
     ],
     2
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "text-center mt-4" }, [
-      _c(
-        "a",
-        {
-          staticClass: "btn btn-outline-secondary",
-          attrs: { href: "/question", type: "button" }
-        },
-        [_vm._v("もう一度")]
-      ),
-      _vm._v(" "),
-      _c(
-        "a",
-        {
-          staticClass: "btn btn-outline-secondary",
-          attrs: { href: "/", type: "button" }
-        },
-        [_vm._v("トップページに戻る")]
-      )
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

@@ -13,7 +13,7 @@ class ActivitiesTableSeeder extends Seeder
     {
         DB::table('activities')->truncate();
 
-        factory(App\User::class, 5)
+        factory(App\User::class, 100)
             ->create()
             ->each(function ($user) {
                 DB::table('activities')->insert([
@@ -23,6 +23,7 @@ class ActivitiesTableSeeder extends Seeder
                     'correct_answer_second' => round(5 + mt_rand() / mt_getrandmax() * (30 - 5), 1),
                     'created_at' => now(),
                     'updated_at' => now(),
+                    'genre_id' => mt_rand(1, 2),
                 ]);
             });
     }
