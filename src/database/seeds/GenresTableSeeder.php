@@ -11,8 +11,6 @@ class GenresTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('genres')->truncate();
-
         DB::table('genres')->insert([
             [
                 'title' => '足し算',
