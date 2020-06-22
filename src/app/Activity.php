@@ -13,4 +13,9 @@ class Activity extends Model
         'correct_answer_second',
         'genre_id',
     ];
+
+    public function genre()
+    {
+        return $this->belongsTo('App\Genre');
+    }
 }
