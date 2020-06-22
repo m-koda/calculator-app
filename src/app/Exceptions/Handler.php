@@ -4,6 +4,9 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use App\Exceptions\AuthenticateWithFlashException;
+use Illuminate\Http\Request;
+use Session;
 
 class Handler extends ExceptionHandler
 {
@@ -50,6 +53,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof AuthenticateWithFlashException) {
+            Session::flash('error_msg', 'Error');
+            return response()->redirectTo('/activity');
+        }
         return parent::render($request, $exception);
     }
 }

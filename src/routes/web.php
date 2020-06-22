@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
-Route::get('/question', 'QuestionController@index')->name('question');
+Route::get('/question', 'QuestionController@index')->name('question')->middleware('auth.flash');
 Route::get('/activity', 'ActivityController@index')->name('activity')->middleware('auth');
 
 Auth::routes();
