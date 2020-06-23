@@ -38362,7 +38362,11 @@ var render = function() {
                 {
                   staticClass: "btn btn-outline-secondary",
                   attrs: {
-                    href: "/question?genre=" + _vm.genreId,
+                    href:
+                      "/question?genre=" +
+                      _vm.genreId +
+                      "&questionsNum=" +
+                      _vm.questions.length,
                     type: "button"
                   }
                 },

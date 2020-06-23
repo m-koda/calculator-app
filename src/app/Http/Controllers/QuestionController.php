@@ -10,7 +10,8 @@ class QuestionController extends Controller
     public function index(Request $request)
     {
         $genre_id = $request->query('genre');
-        $questions = Question::where('genre_id', $genre_id)->inRandomOrder()->take(5)->get();
+        $questions_num = $request->query('questionsNum');
+        $questions = Question::where('genre_id', $genre_id)->inRandomOrder()->take($questions_num)->get();
         return view('question.index', ['questions' => $questions, 'genre_id' => $genre_id]);
     }
 }

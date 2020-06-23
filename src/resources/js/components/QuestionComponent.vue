@@ -35,7 +35,7 @@
       </div>
       <div class="text-center mt-4">
         <a
-          v-bind:href="`/question?genre=${genreId}`"
+          v-bind:href="`/question?genre=${genreId}&questionsNum=${questions.length}`"
           type="button"
           class="btn btn-outline-secondary"
         >もう一度</a>
